@@ -1,0 +1,66 @@
+$spacing: 10px;
+
+$color-map: (
+  bakerloo: #B36305,
+  central: #E32017,
+  circle: #FFD300,
+  district: #00782A,
+  dlr: #00A4A7,
+  hammersmith-city: #F3A9BB,
+  jubilee: #A0A5A9,
+  metropolitan: #9B0056,
+  northern: #000000,
+  piccadilly: #003688,
+  victoria: #0098D4,
+  waterloo-city: #95CDBA
+);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#container {
+  width: 600px;
+  margin: auto;
+}
+
+#title {
+  margin-top: $spacing;
+}
+
+#statuses {
+  margin-top: $spacing;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  height: 360px;
+}
+
+.line {
+  width: 300px;
+  height: 50px;
+  padding: $spacing / 2;
+  margin-bottom: 10px;
+
+  .bar {
+    height: 5px;
+    width: 100%;
+    margin-bottom: $spacing / 2;
+
+    @each $line, $color in $color-map {
+      &.#{$line} {
+        background-color: $color;
+      }
+    }
+  }
+
+  .name {
+    font-weight: 700;
+  }
+
+  .status {
+
+  }
+}
