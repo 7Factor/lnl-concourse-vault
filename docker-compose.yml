@@ -1,0 +1,66 @@
+version: "3"
+
+networks:
+  tfl_network:
+    name: tfl_network
+
+services:
+# Vault
+  vault:
+    image: vault
+    build: .
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200
+      - VAULT_DEV_ROOT_TOKEN_ID=root_token
+    networks:
+      - tfl_network
+
+# Docker Registry
+  docker-registry:
+    image: registry
+    networks:
+      - tfl_network
+
+  docker-registry-gui:
+    image: joxit/docker-registry-ui:static
+    ports: [ "5000:80" ]
+    environment:
+      - REGISTRY_URL=http://docker-registry:5000
+    depends_on:
+      - docker-registry
+    networks:
+      - tfl_network
+
+# Concourse
+  concourse-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=concourse
+      - POSTGRES_PASSWORD=concourse_pass
+      - POSTGRES_USER=concourse_user
+      - PGDATA=/database
+    networks:
+      - tfl_network
+
+  concourse:
+    image: concourse/concourse:6.6.0
+    command: quickstart
+    privileged: true
+    depends_on: [concourse-db]
+    ports: ["8080:8080"]
+    environment:
+      - CONCOURSE_POSTGRES_HOST=concourse-db
+      - CONCOURSE_POSTGRES_USER=concourse_user
+      - CONCOURSE_POSTGRES_PASSWORD=concourse_pass
+      - CONCOURSE_POSTGRES_DATABASE=concourse
+      - CONCOURSE_EXTERNAL_URL
+      - CONCOURSE_ADD_LOCAL_USER=admin:admin
+      - CONCOURSE_MAIN_TEAM_LOCAL_USER=admin
+      - CONCOURSE_VAULT_URL=http://vault:8200
+      - CONCOURSE_VAULT_CLIENT_TOKEN=root_token
+    networks:
+      - tfl_network

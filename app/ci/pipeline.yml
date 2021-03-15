@@ -1,41 +1,25 @@
 ---
 resources:
-  - name: app-src
+  - name: tfl-app
     type: git
     source:
-      paths:
-        - app/**
-      branch: master
-      uri: ((git-repositories.api-uri))
+      uri: https://github.com/terrarum/lnl-concourse-vault #((tfl-app.git_uri))
+      branch: main
 
-groups:
-  - name: deployments
-    jobs:
-      - unit-tests
-      - repo-tests
-      - build-rc
-      - deploy-stage
-      - deploy-prod
-      - stage-e2e-tests
+  - name: docker-registry
+    type: docker-image
+    source:
+      repository: docker-registry:5000/tfl-app
+      insecure_registries:
+        - http://docker-registry:5000
 
 jobs:
-  #####################
-  ##     BUILD       ##
-  #####################
-
-  - name: build-rc
-    build_logs_to_retain: 50
-    serial_groups: [staging]
+  - name: build-docker-image
+    public: true
+    serial: true
     plan:
-      - get: api-src
+      - get: tfl-app
         trigger: true
-        passed: [unit-tests]
-      - put: api-image
+      - put: docker-registry
         params:
-          cache: true
-          tag_as_latest: false
-          build: api-src
-          dockerfile: api-src/env/Dockerfile
-          additional_tags: api-src/.git/short_ref
-        get_params:
-          skip_download: true
+          build: tfl-app/app

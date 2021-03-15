@@ -4,8 +4,9 @@
 
 - [x] Get vault and concourse running
 - [x] Connect vault and concourse
-- [] Create a pipeline for the app
-- [] Have it pass a secret in to the app
+- [x] Create a pipeline for the app
+- [x] Push the app to a local docker registry
+- [ ] Have it pass a secret in to the app
 
 Vault: http://localhost:8200
 Concourse: http://localhost:8080
@@ -32,7 +33,7 @@ concourse docker compose
 Terminal into Vault box
 
 `vault login` -> root_token
-`vault secrets enable -version=2 -path=concourse kv`
+`vault secrets enable -version=1 -path=concourse kv`
 
 go to vault UI
 create a policy called `concourse`
@@ -44,6 +45,16 @@ path "concourse/*" {
 
 # Concourse
 target: local, team name: main
-admin/admin
 
 `fly -t local login -n main -c http://127.0.0.1:8080`
+
+Set pipeline
+
+`./app/ci/_set_pipeline.sh`
+
+# Finally run the app
+
+```shell
+docker pull localhost:5000/tfl-app
+docker run -p 3000:3000 localhost:5000/tfl-app
+```
