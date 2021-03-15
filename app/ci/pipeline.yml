@@ -1,0 +1,41 @@
+---
+resources:
+  - name: app-src
+    type: git
+    source:
+      paths:
+        - app/**
+      branch: master
+      uri: ((git-repositories.api-uri))
+
+groups:
+  - name: deployments
+    jobs:
+      - unit-tests
+      - repo-tests
+      - build-rc
+      - deploy-stage
+      - deploy-prod
+      - stage-e2e-tests
+
+jobs:
+  #####################
+  ##     BUILD       ##
+  #####################
+
+  - name: build-rc
+    build_logs_to_retain: 50
+    serial_groups: [staging]
+    plan:
+      - get: api-src
+        trigger: true
+        passed: [unit-tests]
+      - put: api-image
+        params:
+          cache: true
+          tag_as_latest: false
+          build: api-src
+          dockerfile: api-src/env/Dockerfile
+          additional_tags: api-src/.git/short_ref
+        get_params:
+          skip_download: true
