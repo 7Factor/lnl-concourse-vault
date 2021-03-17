@@ -27,8 +27,4 @@ COPY --from=build /app/server.js .
 
 EXPOSE 3000
 
-ARG TFL_API_KEY
-
-ENV TFL_API_KEY=$TFL_API_KEY
-
 CMD ["node", "server.js"]

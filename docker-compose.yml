@@ -13,9 +13,6 @@ services:
       - IPC_LOCK
     ports:
       - "8200:8200"
-    environment:
-      - VAULT_ADDR=http://0.0.0.0:8200
-      - VAULT_DEV_ROOT_TOKEN_ID=root_token
     networks:
       - tfl_network
 
@@ -60,7 +57,5 @@ services:
       - CONCOURSE_EXTERNAL_URL
       - CONCOURSE_ADD_LOCAL_USER=admin:admin
       - CONCOURSE_MAIN_TEAM_LOCAL_USER=admin
-      - CONCOURSE_VAULT_URL=http://vault:8200
-      - CONCOURSE_VAULT_CLIENT_TOKEN=root_token
     networks:
       - tfl_network
