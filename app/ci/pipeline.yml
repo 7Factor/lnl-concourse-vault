@@ -3,11 +3,13 @@ resources:
   - name: tfl-app
     type: git
     source:
-      uri: https://github.com/terrarum/lnl-concourse-vault #((tfl-app.git_uri))
+      uri: ((tfl.git_uri))
       branch: main
 
   - name: docker-registry
     type: docker-image
+    build_args:
+      TFL_API_KEY: ((tfl.api_key))
     source:
       repository: docker-registry:5000/tfl-app
       insecure_registries:

@@ -9,7 +9,9 @@
 - [ ] Have it pass a secret in to the app
 
 Vault: http://localhost:8200
-Concourse: http://localhost:8080
+Concourse: http://127.0.0.1:8080
+Docker Registry: http://localhost:5000
+TFL App: http://localhost:3000
 
 ## TfL API
 
@@ -17,7 +19,7 @@ Line Status
 
 https://api-portal.tfl.gov.uk/api-details#api=Line&operation=Line_StatusByModeByPathModesQueryDetailQuerySeverityLevel
 
-`https://api.tfl.gov.uk/Line/Mode/tube,dlr/Status?app_key=2213d8123faa4f2b8feb5e0c1838db93`
+`https://api.tfl.gov.uk/Line/Mode/tube,dlr/Status?app_key=`
 
 # Notes
 
@@ -58,3 +60,10 @@ Set pipeline
 docker pull localhost:5000/tfl-app
 docker run -p 3000:3000 localhost:5000/tfl-app
 ```
+
+# Secrets???
+Secrets are found at
+/concourse/TEAM_NAME/PIPELINE_NAME/foo
+
+TEAM_NAME is main
+PIPELINE_NAME is tfl
