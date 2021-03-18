@@ -10,6 +10,8 @@ resources:
     type: docker-image
     source:
       repository: docker-registry:5000/tfl-app
+      build_args:
+        TFL_API_KEY: ((tfl.tfl_api_key))
       insecure_registries:
         - http://docker-registry:5000
 
