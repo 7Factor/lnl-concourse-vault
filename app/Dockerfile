@@ -25,9 +25,6 @@ RUN npm ci
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.js .
 
-ARG TFL_API_KEY
-ENV TFL_API_KEY=$TFL_API_KEY
-
 EXPOSE 3000
 
 CMD ["node", "server.js"]
