@@ -16,6 +16,7 @@ https://api-portal.tfl.gov.uk/api-details#api=Line&operation=Line_StatusByModeBy
 target: local, team name: main
 
 `fly -t local login -n main -c http://127.0.0.1:8080`
+`fly --target=local login --team-name=main --concourse-url=http://127.0.0.1:8080`
 
 Set pipeline
 
