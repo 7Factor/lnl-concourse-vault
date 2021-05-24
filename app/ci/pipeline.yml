@@ -12,8 +12,6 @@ resources:
       repository: docker-registry:5000/tfl-app
       insecure_registries:
         - http://docker-registry:5000
-      build_args:
-        TFL_API_KEY: ((tfl.tfl_api_key))
 
 jobs:
   - name: build-docker-image
